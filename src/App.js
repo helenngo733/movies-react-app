@@ -1,25 +1,11 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const API_KEY = 'API_KEY'; // Will change this later
+const DEFAULT_URL = 'https://api.themoviedb.org/3';
+const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+const EMPTY_POSTER = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750"><rect width="500" height="750" fill="%23d6d6d6"/></svg>';
 
-export default App;
+export default function App() {
+  // Code TBA
+}
