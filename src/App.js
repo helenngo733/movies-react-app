@@ -10,6 +10,7 @@ const EMPTY_POSTER = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"
 // Header Component
 function SearchSort({ currentSearch, currentSort, newSearch, newSort }) {
   return (
+    // searching based on input and sorting based on options
     <div className="sortControls">
       <input type="text" id="searchInput" placeholder="Search for a movie..." value={currentSearch} onChange={(event) => newSearch(event.target.value)} />
       <select id="sortSelect" value={currentSort || 'Sortings'} onChange={(event) => newSort(event.target.value)} >
@@ -23,9 +24,10 @@ function SearchSort({ currentSearch, currentSort, newSearch, newSort }) {
   );
 }
 
-//Main Component - Done
+//Main Component
 function DisplayMovies({ movie }) {
   return (
+    // poster, title, release date, and rating
     <div className="movie-poster">
       <img src={movie.poster_path ? IMAGE_URL + movie.poster_path : EMPTY_POSTER} alt={movie.title} />
       <h3>{movie.title}</h3>
@@ -38,6 +40,7 @@ function DisplayMovies({ movie }) {
 //Footer Component
 function Pagination({ currentPage, totalPages, prevButton, nextButton }) {
   return (
+    // previous/next buttons and current/total pages
     <div className="pagination">
       <button id="prevButton" onClick={prevButton} disabled={currentPage === 1}> Previous </button>
       <span id="pageNumber">Page {currentPage} of {totalPages}</span>
@@ -76,24 +79,26 @@ export default function App() {
         }
       }
 
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await fetch(url);  // HTTP request to TMDB API
+      const data = await response.json(); // convert response to JSON
 
-      if (currentPage === 1) {
+      if (currentPage === 1) { // update total pages
         setTotalPages(data.total_pages || 1);
       }
-      setMovies(data.results || []);
+      setMovies(data.results || []); // update movies  
     }
 
     fetchMovies();
-  }, [currentPage, currentSearch, currentSort]);
+  }, [currentPage, currentSearch, currentSort]); // dependencies: rerun effect when these changes 
 
 
+  // handles searching changes
   const handleSearch = (value) => {
     setCurrentSearch(value);
     setCurrentPage(1);
   };
 
+  // handles sorting changes 
   const handleSort = (value) => {
     setCurrentSort(value === 'Sortings' ? '' : value);
     setCurrentPage(1);
@@ -105,6 +110,7 @@ export default function App() {
       <header>
         <h1>Movie Explorer</h1>
         <SearchSort
+          // passing current search/sort values and handlers to update them
           currentSearch={currentSearch}
           currentSort={currentSort}
           newSearch={handleSearch}
@@ -114,7 +120,7 @@ export default function App() {
 
       <main>
         <div id="moviesContainer" className="movies-grid">
-          {movies.map((movie) => (
+          {movies.map((movie) => ( // looping through movies and displaying each one
             <DisplayMovies key={movie.id} movie={movie} />
           ))}
         </div>
@@ -124,8 +130,8 @@ export default function App() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          prevButton={() => setCurrentPage((page) => Math.max(1, page - 1))}
-          nextButton={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+          prevButton={() => setCurrentPage((page) => Math.max(1, page - 1))} // going to previous page, stops at first page
+          nextButton={() => setCurrentPage((page) => Math.min(totalPages, page + 1))} // going to next page, stops at total pages
         />
       </footer>
  
